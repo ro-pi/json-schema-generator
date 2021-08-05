@@ -5,7 +5,6 @@ namespace Ropi\JsonSchemaGenerator;
 
 interface JsonSchemaGeneratorInterface
 {
-    function record(object $dataset): void;
-    function reset(): void;
-    function generate(): object;
+    function recordInstance(object $instance): void;
+    function generateSchema(): object;
 }
