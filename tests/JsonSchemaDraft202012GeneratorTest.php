@@ -26,15 +26,20 @@ class JsonSchemaDraft202012GeneratorTest extends TestCase
         $instances = [
             (object) [
                 'firstname' => 'Foo',
-                'lastname' => 'Bar'
+                'lastname' => 'Bar',
+                'id' => 1,
+                'favNums' => [1,2,3]
             ],
             (object) [
                 'firstname' => 'Max',
-                'lastname' => 'Mustermann'
+                'lastname' => 'Mustermann',
+                'id' => 2,
+                'favNums' => [7,9]
             ],
             (object) [
                 'firstname' => 'Hello',
-                'lastname' => 'Bar'
+                'lastname' => 'Bar',
+                'favNums' => [1,2,3,4]
             ]
         ];
 

@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace Ropi\JsonSchemaGenerator\GenerationContext;
 
+use Ropi\JsonSchemaGenerator\Exception\JsonSchemaGeneratorException;
 use Ropi\JsonSchemaGenerator\GenerationConfig\GenerationConfig;
+use Ropi\JsonSchemaGenerator\GenerationContext\Exception\UnsupportedInstanceTypeException;
+use Ropi\JsonSchemaGenerator\Keyword\Exception\KeywordSchemaMutationException;
 
 class GenerationContext
 {
@@ -39,6 +42,30 @@ class GenerationContext
     public function getCurrentInstance(): mixed
     {
         return $this->instanceStack[$this->instanceStackPointer];
+    }
+
+    /**
+     * @throws UnsupportedInstanceTypeException
+     */
+    public function getCurrentInstanceJsonSchemaType(): string
+    {
+        $instance = $this->getCurrentInstance();
+
+        return match (true) {
+            is_object($instance) => 'object',
+            is_array($instance) => 'array',
+            is_string($instance) => 'string',
+            is_int($instance) => 'integer',
+            is_float($instance) => 'number',
+            is_bool($instance) => 'boolean',
+            is_null($instance) => 'null',
+            default => throw new UnsupportedInstanceTypeException(
+                'Can not map instance with type "'
+                . gettype($instance)
+                . '" to a suitable JSON Schema type',
+                1628197539
+            )
+        };
     }
 
     public function pushSchema(mixed $schema): void

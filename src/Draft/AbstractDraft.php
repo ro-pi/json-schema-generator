@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Ropi\JsonSchemaGenerator\Draft;
 
 use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
+use Ropi\JsonSchemaGenerator\Keyword\Exception\InterruptSchemaMutationException;
 use Ropi\JsonSchemaGenerator\Keyword\KeywordInterface;
 
 abstract class AbstractDraft implements DraftInterface
@@ -26,7 +27,11 @@ abstract class AbstractDraft implements DraftInterface
     public function mutateSchema(GenerationContext $context): void
     {
         foreach ($this->getKeywords() as $keyword) {
-            $keyword->mutateSchema($context);
+            try {
+                $keyword->mutateSchema($context);
+            } catch (InterruptSchemaMutationException) {
+                break;
+            }
         }
     }
 }

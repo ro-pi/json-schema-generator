@@ -4,34 +4,105 @@ declare(strict_types=1);
 namespace Ropi\JsonSchemaGenerator\Keyword;
 
 use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
-use Ropi\JsonSchemaGenerator\Keyword\Exception\KeywordSchemaMutationException;
+use Ropi\JsonSchemaGenerator\Keyword\Exception\InterruptSchemaMutationException;
 
 class TypeKeyword implements KeywordInterface
 {
+    /**
+     * @throws InterruptSchemaMutationException
+     * @throws \Ropi\JsonSchemaGenerator\GenerationContext\Exception\UnsupportedInstanceTypeException
+     */
     public function mutateSchema(GenerationContext $context): void
     {
-        $context->getCurrentSchema()->type = $this->mapJsonSchemaType($context->getCurrentInstance());
+        $schema = $context->getCurrentSchema();
+        $instanceType = $context->getCurrentInstanceJsonSchemaType();
+
+        if (!isset($schema->type) && !isset($schema->anyOf)) {
+            $schema->type = $context->getCurrentInstanceJsonSchemaType();
+            return;
+        }
+
+        if (isset($schema->type) && is_string($schema->type)) {
+            if ($schema->type === $instanceType) {
+                return;
+            }
+
+            if ($this->isNumericType($schema->type) && $this->isNumericType($instanceType)) {
+                $schema->type = 'number';
+                return;
+            }
+        }
+
+        if ($context->config->multipleTypesToAnyOf) {
+            if (!isset($schema->anyOf)) {
+                // Move current schema to anyOf
+
+                $firstAnyOfSchema = clone $schema;
+                unset($firstAnyOfSchema->{'$schema'});
+
+                $anyOf = [$firstAnyOfSchema];
+
+                foreach ($schema as $keywordName => $keywordValue) {
+                    if ($keywordName === '$schema') {
+                        continue;
+                    }
+
+                    unset($schema->$keywordName);
+                }
+
+                $schema->anyOf = $anyOf;
+            }
+
+            $targetSchema = $this->resolveSchemaForType($schema, $instanceType);
+
+            $context->pushSchema($targetSchema);
+            $context->config->draft->mutateSchema($context);
+            $context->popSchema();
+
+            throw new InterruptSchemaMutationException();
+        }
+
+        if (is_array($schema->type)) {
+            foreach ($schema->type as $typeIndex => $type) {
+                if ($type === $instanceType) {
+                    return;
+                }
+
+                if ($this->isNumericType($type) && $this->isNumericType($instanceType)) {
+                    $schema->type[$typeIndex] = 'number';
+                    return;
+                }
+            }
+
+            $schema->type[] = $instanceType;
+            return;
+        }
+
+        $schema->type = [$schema->type, $instanceType];
     }
 
-    /**
-     * @throws KeywordSchemaMutationException
-     */
-    protected function mapJsonSchemaType(mixed $value): string
+    protected function isNumericType(string $type): bool
     {
-        return match (true) {
-            is_object($value) => 'object',
-            is_array($value) => 'array',
-            is_string($value) => 'string',
-            is_int($value) => 'integer',
-            is_float($value) => 'float',
-            is_bool($value) => 'boolean',
-            is_null($value) => 'null',
-            default => throw new KeywordSchemaMutationException(
-                'Can not map value with type "'
-                . gettype($value)
-                . '" to a suitable JSON Schema type',
-                1628197539
-            )
-        };
+        return $type === 'integer' || $type === 'number';
+    }
+
+    protected function resolveSchemaForType(object $schema, string $type): object
+    {
+        foreach ($schema->anyOf as $anyOf) {
+            if ($anyOf->type === $type) {
+                return $anyOf;
+            }
+
+            if ($this->isNumericType($anyOf->type) && $this->isNumericType($type)) {
+                $anyOf->type = 'number';
+                return $anyOf;
+            }
+        }
+
+        $targetSchema = new \stdClass();
+        $targetSchema->type = $type;
+        $schema->anyOf[] = $targetSchema;
+
+        return $targetSchema;
     }
 }

@@ -17,10 +17,11 @@ class MaxLengthKeyword implements KeywordInterface
         $schema = $context->getCurrentSchema();
         $length = mb_strlen($instance, 'UTF-8');
 
-        if (isset($schema->maxLength)) {
-            $schema->maxLength = max($length, $schema->maxLength);
-        } else {
+        if (!isset($schema->maxLength)) {
             $schema->maxLength = $length;
+            return;
         }
+
+        $schema->maxLength = max($length, $schema->maxLength);
     }
 }

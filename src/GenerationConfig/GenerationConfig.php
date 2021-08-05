@@ -16,6 +16,7 @@ class GenerationConfig
         ?CardinalityEstimatorFactoryInterface $cardinalityEstimatorFactory = null,
         public /*readonly*/ int $maxExampleValues = 48,
         public /*readonly*/ int $maxEnumSize = 48,
+        public /*readonly*/ bool $multipleTypesToAnyOf = true,
     ) {
         $this->cardinalityEstimatorFactory = $cardinalityEstimatorFactory ?? new HyperLogLogCardinalityEstimatorFactory();
     }

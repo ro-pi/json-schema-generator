@@ -5,23 +5,21 @@ namespace Ropi\JsonSchemaGenerator\Keyword;
 
 use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
 
-class MinLengthKeyword implements KeywordInterface
+class MinimumKeyword implements KeywordInterface
 {
     public function mutateSchema(GenerationContext $context): void
     {
         $instance = $context->getCurrentInstance();
-        if (!is_string($instance)) {
+        if (!is_int($instance) && !is_float($instance)) {
             return;
         }
 
         $schema = $context->getCurrentSchema();
-        $length = mb_strlen($instance, 'UTF-8');
-
-        if (!isset($schema->minLength)) {
-            $schema->minLength = $length;
+        if (!isset($schema->minimum)) {
+            $schema->minimum = $instance;
             return;
         }
 
-        $schema->minLength = min($length, $schema->minLength);
+        $schema->minimum = min($instance, $schema->minimum);
     }
 }
