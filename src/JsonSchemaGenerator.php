@@ -8,23 +8,23 @@ use Ropi\JsonSchemaGenerator\Context\RecordContext;
 
 class JsonSchemaGenerator implements JsonSchemaGeneratorInterface
 {
-    protected /*readonly*/ RecordContext $Context;
+    protected /*readonly*/ RecordContext $recordContext;
 
     public function __construct(GenerationConfig $config)
     {
-        $this->RecordContext = new RecordContext($config);
+        $this->recordContext = new RecordContext($config);
     }
 
     public function recordInstance(mixed $instance): void
     {
-        $this->RecordContext->pushInstance($instance);
-        $this->RecordContext->config->draft->recordInstance($this->RecordContext);
-        $this->RecordContext->popInstance();
+        $this->recordContext->pushInstance($instance);
+        $this->recordContext->config->draft->recordInstance($this->recordContext);
+        $this->recordContext->popInstance();
     }
 
     public function generateSchema(): object
     {
-        $this->RecordContext->config->draft->generateSchema();
-        return $this->RecordContext->getCurrentSchema();
+        $this->recordContext->config->draft->generateSchema();
+        return $this->recordContext->getCurrentSchema();
     }
 }
