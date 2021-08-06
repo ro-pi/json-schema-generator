@@ -11,5 +11,5 @@ interface KeywordInterface
     /**
      * @throws InterruptSchemaMutationException
      */
-    function mutateSchema(GenerationContext $context): void;
+    function recordInstance(GenerationContext $context): void;
 }

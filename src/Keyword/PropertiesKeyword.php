@@ -7,7 +7,7 @@ use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
 
 class PropertiesKeyword implements KeywordInterface
 {
-    public function mutateSchema(GenerationContext $context): void
+    public function recordInstance(GenerationContext $context): void
     {
         $instance = $context->getCurrentInstance();
         if (!is_object($instance)) {
@@ -27,7 +27,7 @@ class PropertiesKeyword implements KeywordInterface
             $context->pushSchema($schema->properties->$propertyName);
             $context->pushInstance($propertyValue);
 
-            $context->config->draft->mutateSchema($context);
+            $context->config->draft->recordInstance($context);
 
             $context->popInstance();
             $context->popSchema();

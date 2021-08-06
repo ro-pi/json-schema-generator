@@ -7,7 +7,7 @@ use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
 
 class MaxItemsKeyword implements KeywordInterface
 {
-    public function mutateSchema(GenerationContext $context): void
+    public function recordInstance(GenerationContext $context): void
     {
         $instance = $context->getCurrentInstance();
         if (!is_array($instance)) {

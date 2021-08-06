@@ -7,7 +7,7 @@ use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
 
 class ContainsKeyword implements KeywordInterface
 {
-    public function mutateSchema(GenerationContext $context): void
+    public function recordInstance(GenerationContext $context): void
     {
         $instance = $context->getCurrentInstance();
         if (!is_array($instance)) {
@@ -23,7 +23,7 @@ class ContainsKeyword implements KeywordInterface
 
         foreach ($instance as $item) {
             $context->pushInstance($item);
-            $context->config->draft->mutateSchema($context);
+            $context->config->draft->recordInstance($context);
             $context->popInstance();
         }
 

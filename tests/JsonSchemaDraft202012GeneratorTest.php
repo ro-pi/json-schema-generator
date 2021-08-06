@@ -28,7 +28,7 @@ class JsonSchemaDraft202012GeneratorTest extends TestCase
                 'firstname' => 'Foo',
                 'lastname' => 'Bar',
                 'id' => 1,
-                'favNums' => [1,2,3]
+                'favNums' => [1,2,3],
             ],
             (object) [
                 'firstname' => 'Max',
@@ -40,8 +40,13 @@ class JsonSchemaDraft202012GeneratorTest extends TestCase
                 'firstname' => 'Hello',
                 'lastname' => 'Bar',
                 'favNums' => [1,2,3,4]
-            ]
+            ],
+            1,
         ];
+
+        for ($i = 0; $i < 1024; $i++) {
+            $instances[0]->someNumbers[] = $i;
+        }
 
         foreach ($instances as $instance) {
             $jsonSchemaGenerator->recordInstance($instance);

@@ -5,6 +5,8 @@ namespace Ropi\JsonSchemaGenerator\Draft;
 
 use Ropi\JsonSchemaGenerator\Keyword\AdditionalPropertiesKeyword;
 use Ropi\JsonSchemaGenerator\Keyword\ContainsKeyword;
+use Ropi\JsonSchemaGenerator\Keyword\EnumKeyword;
+use Ropi\JsonSchemaGenerator\Keyword\EstimatedCardinalityKeyword;
 use Ropi\JsonSchemaGenerator\Keyword\ExamplesKeyword;
 use Ropi\JsonSchemaGenerator\Keyword\MaximumKeyword;
 use Ropi\JsonSchemaGenerator\Keyword\MaxItemsKeyword;
@@ -14,6 +16,7 @@ use Ropi\JsonSchemaGenerator\Keyword\MinItemsKeyword;
 use Ropi\JsonSchemaGenerator\Keyword\MinLengthKeyword;
 use Ropi\JsonSchemaGenerator\Keyword\PropertiesKeyword;
 use Ropi\JsonSchemaGenerator\Keyword\RequiredKeyword;
+use Ropi\JsonSchemaGenerator\Keyword\SchemaDataMapTrait;
 use Ropi\JsonSchemaGenerator\Keyword\SchemaKeyword;
 use Ropi\JsonSchemaGenerator\Keyword\TypeKeyword;
 
@@ -40,6 +43,8 @@ class Draft202012 extends AbstractDraft
         $this->registerKeyword(new MaxLengthKeyword());
         $this->registerKeyword(new MinimumKeyword());
         $this->registerKeyword(new MaximumKeyword());
+        $this->registerKeyword(new EstimatedCardinalityKeyword());
         $this->registerKeyword(new ExamplesKeyword());
+        $this->registerKeyword(new EnumKeyword());
     }
 }

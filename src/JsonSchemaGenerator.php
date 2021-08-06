@@ -18,12 +18,13 @@ class JsonSchemaGenerator implements JsonSchemaGeneratorInterface
     public function recordInstance(mixed $instance): void
     {
         $this->generationContext->pushInstance($instance);
-        $this->generationContext->config->draft->mutateSchema($this->generationContext);
+        $this->generationContext->config->draft->recordInstance($this->generationContext);
         $this->generationContext->popInstance();
     }
 
     public function generateSchema(): object
     {
+        $this->generationContext->config->draft->generateSchema();
         return $this->generationContext->getCurrentSchema();
     }
 }

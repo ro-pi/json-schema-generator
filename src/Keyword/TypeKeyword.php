@@ -12,7 +12,7 @@ class TypeKeyword implements KeywordInterface
      * @throws InterruptSchemaMutationException
      * @throws \Ropi\JsonSchemaGenerator\GenerationContext\Exception\UnsupportedInstanceTypeException
      */
-    public function mutateSchema(GenerationContext $context): void
+    public function recordInstance(GenerationContext $context): void
     {
         $schema = $context->getCurrentSchema();
         $instanceType = $context->getCurrentInstanceJsonSchemaType();
@@ -56,7 +56,7 @@ class TypeKeyword implements KeywordInterface
             $targetSchema = $this->resolveSchemaForType($schema, $instanceType);
 
             $context->pushSchema($targetSchema);
-            $context->config->draft->mutateSchema($context);
+            $context->config->draft->recordInstance($context);
             $context->popSchema();
 
             throw new InterruptSchemaMutationException();

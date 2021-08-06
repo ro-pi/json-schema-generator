@@ -5,9 +5,11 @@ namespace Ropi\JsonSchemaGenerator\Keyword;
 
 use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
 
-class ExamplesKeyword implements KeywordInterface
+class ExamplesKeyword implements GeneratingKeywordInterface
 {
-    public function mutateSchema(GenerationContext $context): void
+    use SchemaDataMapTrait;
+
+    public function recordInstance(GenerationContext $context): void
     {
         $instance = $context->getCurrentInstance();
         if (!is_scalar($instance)) {
@@ -15,15 +17,25 @@ class ExamplesKeyword implements KeywordInterface
         }
 
         $schema = $context->getCurrentSchema();
-        if (!isset($schema->examples)) {
-            $schema->examples = [];
-        }
-
-        $numExamples = count($schema->examples);
-        if ($numExamples >= $context->config->maxExampleValues) {
+        if (!$this->hasSchemaData($schema)) {
+            $this->setSchemaData($schema, [$context->getCurrentInstanceHash() => $instance]);
             return;
         }
 
-        $schema->examples[crc32((string) $instance)] = $instance;
+        $examples = $this->getSchemaData($schema);
+        if (count($examples) >= $context->config->maxExampleValues) {
+            return;
+        }
+
+        $examples[$context->getCurrentInstanceHash()] = $instance;
+
+        $this->setSchemaData($schema, $examples);
+    }
+
+    public function generateSchema(): void
+    {
+        foreach ($this->getSchemaDataMap() as $schema => $examples) {
+            $schema->examples = array_values($examples);
+        }
     }
 }

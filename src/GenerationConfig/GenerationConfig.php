@@ -4,20 +4,19 @@ declare(strict_types=1);
 namespace Ropi\JsonSchemaGenerator\GenerationConfig;
 
 use Ropi\CardinalityEstimation\Factory\CardinalityEstimatorFactoryInterface;
-use Ropi\CardinalityEstimation\Factory\HyperLogLogCardinalityEstimatorFactory;
 use Ropi\JsonSchemaGenerator\Draft\DraftInterface;
 
 class GenerationConfig
 {
-    public /*readonly*/ CardinalityEstimatorFactoryInterface $cardinalityEstimatorFactory;
+    public /*readonly*/ DraftInterface $draft;
 
     public function __construct(
-        public /*readonly*/ DraftInterface $draft,
-        ?CardinalityEstimatorFactoryInterface $cardinalityEstimatorFactory = null,
-        public /*readonly*/ int $maxExampleValues = 48,
-        public /*readonly*/ int $maxEnumSize = 48,
+        DraftInterface $draft,
+        public /*readonly*/ ?CardinalityEstimatorFactoryInterface $cardinalityEstimatorFactory = null,
+        public /*readonly*/ int $maxExampleValues = 16,
+        public /*readonly*/ int $maxEnumSize = 64,
         public /*readonly*/ bool $multipleTypesToAnyOf = true,
     ) {
-        $this->cardinalityEstimatorFactory = $cardinalityEstimatorFactory ?? new HyperLogLogCardinalityEstimatorFactory();
+        $this->draft = clone $draft;
     }
 }

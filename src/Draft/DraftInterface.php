@@ -10,5 +10,6 @@ interface DraftInterface
 {
     function getUri(): string;
     function registerKeyword(KeywordInterface $keyword): void;
-    function mutateSchema(GenerationContext $context): void;
+    function recordInstance(GenerationContext $context): void;
+    function generateSchema(): void;
 }

@@ -24,7 +24,10 @@ class GenerationContext
 
     public function pushInstance(mixed $instance): void
     {
-        $this->instanceStack[++$this->instanceStackPointer] = $instance;
+        $this->instanceStack[++$this->instanceStackPointer] = [
+            'instance' => $instance,
+            'instanceHash' => is_scalar($instance) ? crc32((string) $instance) : ''
+        ];
     }
 
     public function popInstance(): void
@@ -41,7 +44,12 @@ class GenerationContext
 
     public function getCurrentInstance(): mixed
     {
-        return $this->instanceStack[$this->instanceStackPointer];
+        return $this->instanceStack[$this->instanceStackPointer]['instance'];
+    }
+
+    public function getCurrentInstanceHash(): mixed
+    {
+        return $this->instanceStack[$this->instanceStackPointer]['instanceHash'];
     }
 
     /**
