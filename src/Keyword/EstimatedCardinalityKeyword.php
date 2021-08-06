@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace Ropi\JsonSchemaGenerator\Keyword;
 
 use Ropi\CardinalityEstimation\CardinalityEstimatorInterface;
-use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
+use Ropi\JsonSchemaGenerator\Context\RecordContext;
 
 class EstimatedCardinalityKeyword implements GeneratingKeywordInterface
 {
     use SchemaDataMapTrait;
 
-    public function recordInstance(GenerationContext $context): void
+    public function recordInstance(RecordContext $context): void
     {
         $cardinalityEstimatorFactory = $context->config->cardinalityEstimatorFactory;
         if (!$cardinalityEstimatorFactory) {
@@ -38,7 +38,7 @@ class EstimatedCardinalityKeyword implements GeneratingKeywordInterface
         } else {
             $data[$instanceHash] = true;
 
-            if (count($data) > 128) {
+            if (count($data) > max(128, $context->config->maxEnumSize)) {
                 $cardinalityEstimator = $cardinalityEstimatorFactory->create();
 
                 foreach ($data as $hash => $_) {

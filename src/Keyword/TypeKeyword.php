@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace Ropi\JsonSchemaGenerator\Keyword;
 
-use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
+use Ropi\JsonSchemaGenerator\Context\RecordContext;
 use Ropi\JsonSchemaGenerator\Keyword\Exception\InterruptSchemaMutationException;
 
 class TypeKeyword implements KeywordInterface
 {
     /**
      * @throws InterruptSchemaMutationException
-     * @throws \Ropi\JsonSchemaGenerator\GenerationContext\Exception\UnsupportedInstanceTypeException
+     * @throws \Ropi\JsonSchemaGenerator\Context\Exception\UnsupportedInstanceTypeException
      */
-    public function recordInstance(GenerationContext $context): void
+    public function recordInstance(RecordContext $context): void
     {
         $schema = $context->getCurrentSchema();
         $instanceType = $context->getCurrentInstanceJsonSchemaType();

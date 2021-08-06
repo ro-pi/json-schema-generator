@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Ropi\JsonSchemaGenerator\Keyword;
 
-use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
+use Ropi\JsonSchemaGenerator\Context\RecordContext;
 
 class RequiredKeyword implements KeywordInterface
 {
-    public function recordInstance(GenerationContext $context): void
+    public function recordInstance(RecordContext $context): void
     {
         $instance = $context->getCurrentInstance();
         if (!is_object($instance)) {

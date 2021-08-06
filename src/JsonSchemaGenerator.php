@@ -4,27 +4,27 @@ declare(strict_types=1);
 namespace Ropi\JsonSchemaGenerator;
 
 use Ropi\JsonSchemaGenerator\GenerationConfig\GenerationConfig;
-use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
+use Ropi\JsonSchemaGenerator\Context\RecordContext;
 
 class JsonSchemaGenerator implements JsonSchemaGeneratorInterface
 {
-    protected /*readonly*/ GenerationContext $generationContext;
+    protected /*readonly*/ RecordContext $Context;
 
     public function __construct(GenerationConfig $config)
     {
-        $this->generationContext = new GenerationContext($config);
+        $this->RecordContext = new RecordContext($config);
     }
 
     public function recordInstance(mixed $instance): void
     {
-        $this->generationContext->pushInstance($instance);
-        $this->generationContext->config->draft->recordInstance($this->generationContext);
-        $this->generationContext->popInstance();
+        $this->RecordContext->pushInstance($instance);
+        $this->RecordContext->config->draft->recordInstance($this->RecordContext);
+        $this->RecordContext->popInstance();
     }
 
     public function generateSchema(): object
     {
-        $this->generationContext->config->draft->generateSchema();
-        return $this->generationContext->getCurrentSchema();
+        $this->RecordContext->config->draft->generateSchema();
+        return $this->RecordContext->getCurrentSchema();
     }
 }

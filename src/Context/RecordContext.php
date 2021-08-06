@@ -1,14 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Ropi\JsonSchemaGenerator\GenerationContext;
+namespace Ropi\JsonSchemaGenerator\Context;
 
-use Ropi\JsonSchemaGenerator\Exception\JsonSchemaGeneratorException;
 use Ropi\JsonSchemaGenerator\GenerationConfig\GenerationConfig;
-use Ropi\JsonSchemaGenerator\GenerationContext\Exception\UnsupportedInstanceTypeException;
+use Ropi\JsonSchemaGenerator\Context\Exception\UnsupportedInstanceTypeException;
 use Ropi\JsonSchemaGenerator\Keyword\Exception\KeywordSchemaMutationException;
 
-class GenerationContext
+class RecordContext
 {
     private array $instanceStack = [];
     private int $instanceStackPointer = 0;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Ropi\JsonSchemaGenerator\Keyword;
 
-use Ropi\JsonSchemaGenerator\GenerationContext\GenerationContext;
+use Ropi\JsonSchemaGenerator\Context\RecordContext;
 use Ropi\JsonSchemaGenerator\Keyword\Exception\InterruptSchemaMutationException;
 
 interface KeywordInterface
@@ -11,5 +11,5 @@ interface KeywordInterface
     /**
      * @throws InterruptSchemaMutationException
      */
-    function recordInstance(GenerationContext $context): void;
+    function recordInstance(RecordContext $context): void;
 }
