@@ -22,7 +22,7 @@ class RequiredKeyword implements KeywordInterface
 
         foreach ($schema->required as $propertyKey => $property) {
             if (!isset($instance->{$property})) {
-                unset($schema->required[$propertyKey]);
+                array_splice($schema->required, $propertyKey, 1);
             }
         }
     }

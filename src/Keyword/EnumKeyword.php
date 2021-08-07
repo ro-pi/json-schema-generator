@@ -11,6 +11,10 @@ class EnumKeyword implements GeneratingKeywordInterface
 
     public function recordInstance(RecordContext $context): void
     {
+        if (!$context->config->maxEnumSize) {
+            return;
+        }
+
         $instance = $context->getCurrentInstance();
         if (!is_scalar($instance)) {
             return;
@@ -23,13 +27,13 @@ class EnumKeyword implements GeneratingKeywordInterface
         }
 
         $enum = $this->getSchemaData($schema);
-        if (!$enum) {
+        if (!is_array($enum)) {
             return;
         }
 
         $enum[$context->getCurrentInstanceHash()] = $instance;
         if (count($enum) > $context->config->maxEnumSize) {
-            $this->setSchemaData($schema, false);
+            $this->setSchemaData($schema, true);
             return;
         }
 

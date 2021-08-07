@@ -75,7 +75,7 @@ class RecordContext
         };
     }
 
-    public function pushSchema(mixed $schema): void
+    public function pushSchema(object $schema): void
     {
         $this->schemaStack[++$this->schemaStackPointer] = $schema;
     }
@@ -92,7 +92,7 @@ class RecordContext
         $this->schemaStackPointer--;
     }
 
-    public function getCurrentSchema(): mixed
+    public function getCurrentSchema(): object
     {
         return $this->schemaStack[$this->schemaStackPointer];
     }

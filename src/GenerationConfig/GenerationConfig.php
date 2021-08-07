@@ -14,8 +14,7 @@ class GenerationConfig
         DraftInterface $draft,
         public /*readonly*/ ?CardinalityEstimatorFactoryInterface $cardinalityEstimatorFactory = null,
         public /*readonly*/ int $maxExampleValues = 16,
-        public /*readonly*/ int $maxEnumSize = 64,
-        public /*readonly*/ bool $multipleTypesToAnyOf = true,
+        public /*readonly*/ int $maxEnumSize = 64
     ) {
         $this->draft = clone $draft;
     }

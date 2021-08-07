@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace Ropi\JsonSchemaGenerator\Keyword;
 
 use Ropi\JsonSchemaGenerator\Context\RecordContext;
-use Ropi\JsonSchemaGenerator\Keyword\Exception\InterruptSchemaMutationException;
 
 class TypeKeyword implements KeywordInterface
 {
     /**
-     * @throws InterruptSchemaMutationException
      * @throws \Ropi\JsonSchemaGenerator\Context\Exception\UnsupportedInstanceTypeException
      */
     public function recordInstance(RecordContext $context): void
@@ -33,76 +31,27 @@ class TypeKeyword implements KeywordInterface
             }
         }
 
-        if ($context->config->multipleTypesToAnyOf) {
-            if (!isset($schema->anyOf)) {
-                // Move current schema to anyOf
-
-                $firstAnyOfSchema = clone $schema;
-                unset($firstAnyOfSchema->{'$schema'});
-
-                $anyOf = [$firstAnyOfSchema];
-
-                foreach ($schema as $keywordName => $keywordValue) {
-                    if ($keywordName === '$schema') {
-                        continue;
-                    }
-
-                    unset($schema->$keywordName);
-                }
-
-                $schema->anyOf = $anyOf;
-            }
-
-            $targetSchema = $this->resolveSchemaForType($schema, $instanceType);
-
-            $context->pushSchema($targetSchema);
-            $context->config->draft->recordInstance($context);
-            $context->popSchema();
-
-            throw new InterruptSchemaMutationException();
-        }
-
-        if (is_array($schema->type)) {
-            foreach ($schema->type as $typeIndex => $type) {
-                if ($type === $instanceType) {
-                    return;
-                }
-
-                if ($this->isNumericType($type) && $this->isNumericType($instanceType)) {
-                    $schema->type[$typeIndex] = 'number';
-                    return;
-                }
-            }
-
-            $schema->type[] = $instanceType;
+        if (!is_array($schema->type)) {
+            $schema->type = [$schema->type, $instanceType];
             return;
         }
 
-        $schema->type = [$schema->type, $instanceType];
+        foreach ($schema->type as $typeIndex => $type) {
+            if ($type === $instanceType) {
+                return;
+            }
+
+            if ($this->isNumericType($type) && $this->isNumericType($instanceType)) {
+                $schema->type[$typeIndex] = 'number';
+                return;
+            }
+        }
+
+        $schema->type[] = $instanceType;
     }
 
     protected function isNumericType(string $type): bool
     {
         return $type === 'integer' || $type === 'number';
-    }
-
-    protected function resolveSchemaForType(object $schema, string $type): object
-    {
-        foreach ($schema->anyOf as $anyOf) {
-            if ($anyOf->type === $type) {
-                return $anyOf;
-            }
-
-            if ($this->isNumericType($anyOf->type) && $this->isNumericType($type)) {
-                $anyOf->type = 'number';
-                return $anyOf;
-            }
-        }
-
-        $targetSchema = new \stdClass();
-        $targetSchema->type = $type;
-        $schema->anyOf[] = $targetSchema;
-
-        return $targetSchema;
     }
 }
