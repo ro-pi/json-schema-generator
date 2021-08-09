@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Ropi\JsonSchemaGenerator\GenerationConfig;
+namespace Ropi\JsonSchemaGenerator\Config;
 
 use Ropi\CardinalityEstimation\Factory\CardinalityEstimatorFactoryInterface;
 use Ropi\JsonSchemaGenerator\Draft\DraftInterface;

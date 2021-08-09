@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Ropi\JsonSchemaGenerator;
 
-use Ropi\JsonSchemaGenerator\GenerationConfig\GenerationConfig;
+use Ropi\JsonSchemaGenerator\Config\GenerationConfig;
 use Ropi\JsonSchemaGenerator\Context\RecordContext;
 
 class JsonSchemaGenerator implements JsonSchemaGeneratorInterface

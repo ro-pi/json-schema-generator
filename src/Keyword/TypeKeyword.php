@@ -15,7 +15,7 @@ class TypeKeyword implements KeywordInterface
         $schema = $context->getCurrentSchema();
         $instanceType = $context->getCurrentInstanceJsonSchemaType();
 
-        if (!isset($schema->type) && !isset($schema->anyOf)) {
+        if (!isset($schema->type)) {
             $schema->type = $context->getCurrentInstanceJsonSchemaType();
             return;
         }

@@ -9,8 +9,15 @@ class SchemaKeyword implements KeywordInterface
 {
     public function recordInstance(RecordContext $context): void
     {
-        if ($context->getCurrentSchemaLevel() === 0) {
-            $context->getCurrentSchema()->{'$schema'} = $context->config->draft->getUri();
+        if ($context->getCurrentSchemaLevel() !== 0) {
+            return;
         }
+
+        $schema = $context->getCurrentSchema();
+        if (property_exists($schema, '$schema')) {
+            return;
+        }
+
+        $schema->{'$schema'} = $context->config->draft->getUri();
     }
 }

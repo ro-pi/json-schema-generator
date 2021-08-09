@@ -6,7 +6,7 @@ namespace Ropi\JsonSchemaGenerator\Tests;
 use PHPUnit\Framework\TestCase;
 use Ropi\CardinalityEstimation\Factory\ExactCardinalityEstimatorFactory;
 use Ropi\JsonSchemaGenerator\Draft\Draft202012;
-use Ropi\JsonSchemaGenerator\GenerationConfig\GenerationConfig;
+use Ropi\JsonSchemaGenerator\Config\GenerationConfig;
 use Ropi\JsonSchemaGenerator\JsonSchemaGenerator;
 
 class JsonSchemaDraft202012GeneratorTest extends TestCase

@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace Ropi\JsonSchemaGenerator\Context;
 
-use Ropi\JsonSchemaGenerator\GenerationConfig\GenerationConfig;
+use Ropi\JsonSchemaGenerator\Config\GenerationConfig;
 use Ropi\JsonSchemaGenerator\Context\Exception\UnsupportedInstanceTypeException;
-use Ropi\JsonSchemaGenerator\Keyword\Exception\KeywordSchemaMutationException;
 
 class RecordContext
 {
