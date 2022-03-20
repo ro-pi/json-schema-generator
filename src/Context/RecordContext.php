@@ -66,9 +66,9 @@ class RecordContext
             is_bool($instance) => 'boolean',
             is_null($instance) => 'null',
             default => throw new UnsupportedInstanceTypeException(
-                'Can not map instance with type "'
+                'Can not map instance with type \''
                 . gettype($instance)
-                . '" to a suitable JSON Schema type',
+                . '\' to a suitable JSON Schema type.',
                 1628197539
             )
         };
