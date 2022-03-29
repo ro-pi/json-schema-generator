@@ -8,13 +8,13 @@ use Ropi\JsonSchemaGenerator\Draft\DraftInterface;
 
 class GenerationConfig
 {
-    public /*readonly*/ DraftInterface $draft;
+    public readonly DraftInterface $draft;
 
     public function __construct(
         DraftInterface $draft,
-        public /*readonly*/ ?CardinalityEstimatorFactoryInterface $cardinalityEstimatorFactory = null,
-        public /*readonly*/ int $maxExampleValues = 16,
-        public /*readonly*/ int $maxEnumSize = 64
+        public readonly ?CardinalityEstimatorFactoryInterface $cardinalityEstimatorFactory = null,
+        public readonly int $maxExampleValues = 16,
+        public readonly int $maxEnumSize = 64
     ) {
         $this->draft = clone $draft;
     }

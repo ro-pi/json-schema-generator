@@ -15,7 +15,7 @@ class RecordContext
     private int $schemaStackPointer = 0;
 
     public function __construct(
-        public /*readonly*/ GenerationConfig $config
+        public readonly GenerationConfig $config
     ) {
         $this->schemaStack[0] = new \stdClass();
     }

@@ -8,7 +8,7 @@ use Ropi\JsonSchemaGenerator\Context\RecordContext;
 
 class JsonSchemaGenerator implements JsonSchemaGeneratorInterface
 {
-    protected /*readonly*/ RecordContext $recordContext;
+    protected readonly RecordContext $recordContext;
 
     public function __construct(GenerationConfig $config)
     {
