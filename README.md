@@ -7,7 +7,7 @@ The following drafts are natively supported:
 * [Draft 2020-12](https://json-schema.org/draft/2020-12/json-schema-validation.html)
 
 ### Requirements
-* PHP ^8.0
+* PHP ^8.1
 ## Installation
 The library can be installed from a command line interface by using [composer](https://getcomposer.org/).
 
